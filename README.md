@@ -1,92 +1,165 @@
-# Documentando Bash-fu
+# O objetivo desta documentação é reunir algumas informações acerca de comandos importantes do linux, que são relevantes para o DevOps, que atuam na manipulação de texto e arquivos.
 
+# `grep`
 
+## Permite que você procure padrões em arquivos. Utilize `zgrep` para arquivos `.gzip`.
 
-## Getting started
+## Exemplo:
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+```bash
+$ grep padrão-a-ser-encontrado file.log
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/mauriciocondero/documentando-bash-fu.git
-git branch -M main
-git push -uf origin main
+padrão-a-ser-encontrado
 ```
 
-## Integrate with your tools
+## Parâmetros:
 
-- [ ] [Set up project integrations](https://gitlab.com/mauriciocondero/documentando-bash-fu/-/settings/integrations)
+### `-n`: número de linhas correspondentes;
+### `-i`: ignorar maiúsculas e minúsculas (*case insensitive*);
+### `-v`: Inverter correspondências, ou seja, selecionar linhas não correspondentes;
+### `-E`: Regex extendido;
+### `-c`: Contar o número de correspondências;
+### `-l`: Encontrar nomes de arquivos que correspondam ao padrão.
 
-## Collaborate with your team
+# `ngrep`
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## Usados para analisar pacotes de rede.
 
-## Test and Deploy
+## Exemplo:
 
-Use the built-in continuous integration in GitLab.
+```bash
+$ ngrep -q '.' 'icmp'
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+interface: enp0s3 (10.0.2.0/255.255.0)
+filter: ( icmp ) and ((ip || ip6)) || (vlan && (ip || ip6)))
+match: .
+```
 
-***
+## Parâmetros:
 
-# Editing this README
+### `-d`: Especificar a interface de rede;
+### `-i`: Ignorar diferença entre maiúsculas e minúsculas (*case insensitive*);
+### `-x`: Printar em *hexdump* alternado;
+### `-t`: Printar o *timestamp*;
+### `-I`: Ler arquivo `.pcap`;
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+# `cut`
 
-## Name
-Choose a self-explaining name for your project.
+## Usado para analisar campos de logs delimitados.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## Exemplo:
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+```bash
+$ cut -d ":" -f 2 file.log
+```
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## Parâmetros:
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### `-d`: Usar o delimitador de campo;
+### `-f`: O número dos campos;
+### `-c`: Especificar posição dos caracteres;
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+# `sed`
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+## Usado para substituir *strings* em um arquivo.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## Exemplo:
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+```bash
+$ sed s/regex/replace/g
+```
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+## Parâmetros:
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+### `s`: Pesquisar;
+### `g`: Substituir;
+### `d`: Deletar;
+### `w`: Anexar ao arquivo;
+### `-e`: Executar comando;
+### `-n`: Suprimir saída;
 
-## License
-For open source projects, say how it is licensed.
+# `sort`
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## Usado para ordenar as linhas de um arquivo.
+
+## Exemplo:
+
+```bash
+$ sort file.txt
+```
+
+## Parâmetros:
+
+### `-o`: Saída para o arquivo;
+### `-r`: Ordem reversa;
+### `-n`: Ordem numérica;
+### `-k`: Ordenar por coluna;
+### `-c`: Verificar se ordenado;
+### `-u`: Ordenar e remover;
+### `-f`: Ignorar diferenças entre maiúsculas e minúsculas (*case insensitive*);
+### `-h`: Ordenar números em uma leitura amigável (*human readable*);
+
+# `uniq`
+
+## É utilizado para remover ou reportar linhas duplicadas em um arquivo.
+
+## Exemplo:
+
+```bash
+$ uniq file.txt
+```
+
+## Parâmetros:
+
+### `-c`: Contar o número de duplicatas;
+### `-d`: Printar duplicatas;
+### `-i`: Ignorar diferenças entre maiúsculas e minúsculas (*case insensitive*);
+
+# `diff`
+
+## Usado para mostrar as diferênças entre arquivos ao compará-los linha por linha.
+
+## Exemplo:
+
+```bash
+$ diff file1.txt file2.txt
+```
+
+## Como fazer a leitura da saída do comando:
+
+### `a`: Adicionar;
+### `c`: Modificar;
+### `d`: Deletar;
+### `#`: Número das linhas;
+### `<`: Referente ao primeiro arquivo;
+### `>`: Referente ao segundo arquivo;
+
+# `awk`
+
+## É uma linguagem de programação usada para manipular dados.
+
+## Exemplo:
+
+```bash
+$ awk {print $2} file.log
+```
+
+---
+
+## Printar a primeira coluna com separador ":"
+
+```bash
+awk -F: '{print$1}' /etc/passwd
+```
+
+---
+
+## Extrair valor *uniq* de dois arquivos
+
+```bash
+awk 'FNR==NR {a[$0]++; next} !($0 in a)' file1.txt file2.txt
+```
+
+---
